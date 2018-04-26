@@ -18,8 +18,8 @@ public class DemoController {
     @RequestMapping(path = "/preview", method = RequestMethod.POST, produces = "application/json")
     public Boolean evaluate(@RequestBody Case input) {
 
-        Spec<Case> packageCodeSpec = SpecFactory.stringInList(Arrays.asList("ME01E", "ME02E"), Case::getPackageCode);
-        Spec<Case> oacodeSpec = SpecFactory.stringEquals("HDS-123", Case::getOacode);
+        Spec<Case> packageCodeSpec = SpecFactory.inList(Arrays.asList("ME01E", "ME02E"), Case::getPackageCode);
+        Spec<Case> oacodeSpec = SpecFactory.equals("HDS-123", Case::getOacode);
 
         Spec<Agent> posCodeSpec = new Spec<>(a -> "POS01".equals(a.getPosCode()));
 
