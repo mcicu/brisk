@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ro.orange.brisk.beans.Agent;
 import ro.orange.brisk.beans.Case;
 import ro.orange.brisk.rules.PackageCodeSpecification;
 import ro.orange.brisk.rules.Spec;
@@ -21,13 +22,17 @@ public class DemoController {
         Specification s = new PackageCodeSpecification();
         s.setAgainst("ME01E");
 
-        Spec<Case> packageCodeSpec = new Spec<Case>(c -> "ME01E".equals(c.getPackageCode()));
-        Spec<Case> oacodeSpec = new Spec<Case>(c -> "HDS-123".equals(c.getOacode()));
+        Spec<Case> packageCodeSpec = new Spec<>(c -> "ME01E".equals(c.getPackageCode()));
+        Spec<Case> oacodeSpec = new Spec<>(c -> "HDS-123".equals(c.getOacode()));
 
-        Spec<Case> specsCapture = Arrays.asList(packageCodeSpec, oacodeSpec).stream().reduce((s1, s2) -> s1.and(s2)).get();
+        Spec<Agent> posCodeSpec = new Spec<>(a -> "POS01".equals(a.getPosCode()));
+
+        Spec<Case> compositeSpec = new Spec<>(c -> packageCodeSpec.and(oacodeSpec).isSatisfiedBy(c) && posCodeSpec.isSatisfiedBy(c.getAgent()));
+
+
 
         Boolean eval = true;
-        eval = eval && specsCapture.isSatisfiedBy(input);
+        eval = eval && compositeSpec.isSatisfiedBy(input);
         return eval;
     }
 
