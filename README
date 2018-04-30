@@ -1,0 +1,11 @@
+Brisk business rules modelling
+
+webface
+- can describe specifications on selected classes via web interface
+- specifications should be webface compatible (view defined specs)
+
+persistence
+- serialize / persist spec
+- deserialize / fetch spec
+
+webface and persistence may be solved by the similar underlying serialization/deserialization methods
