@@ -15,6 +15,8 @@ import ro.orange.brisk.utils.LambdaUtils;
 
 import java.lang.invoke.*;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -31,7 +33,10 @@ public class DemoController {
 
         Spec<Agent> posCodeSpec = SpecFactory.equals("POS01", Agent::getPosCode);
 
-        Spec<Case> compositeSpec = new Spec<>(c -> packageCodeSpec.and(oacodeSpec).isSatisfiedBy(c) && posCodeSpec.isSatisfiedBy(c.getAgent()));
+        Spec<LocalDateTime> dateSpec = SpecFactory.greaterThanOrEqual(LocalDateTime.of(2018, Month.APRIL, 1, 0, 0));
+
+        //could eval input fields, input subfields, and static specs
+        Spec<Case> compositeSpec = new Spec<>(c -> packageCodeSpec.and(oacodeSpec).isSatisfiedBy(c) && posCodeSpec.isSatisfiedBy(c.getAgent()) && dateSpec.isSatisfiedBy(LocalDateTime.now()));
 
         Boolean eval = true;
         eval = eval && compositeSpec.isSatisfiedBy(input);
@@ -43,7 +48,7 @@ public class DemoController {
 
     @RequestMapping(path = "/groovy", method = RequestMethod.POST, produces = "application/json")
     public Boolean groovy(@RequestBody Case input) {
-        Boolean result = (Boolean) Eval.me("cc", input, "cc.packageCode == \"ME01E\"");
+        Boolean result = (Boolean) Eval.x(input, "Arrays.asList(\"ME01E\", \"ME02E\").contains(x.packageCode) && x.oacode == \"HDS-123\" && x.agent.posCode == \"POS01\"");
         return result;
     }
 
