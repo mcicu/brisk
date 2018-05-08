@@ -1,4 +1,4 @@
-package ro.orange.brisk.utils;
+package ro.orange.brisk.core.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

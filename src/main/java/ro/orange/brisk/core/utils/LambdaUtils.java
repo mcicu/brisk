@@ -1,8 +1,7 @@
-package ro.orange.brisk.utils;
+package ro.orange.brisk.core.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ro.orange.brisk.controllers.DemoController;
 
 import java.lang.invoke.*;
 import java.util.function.Function;

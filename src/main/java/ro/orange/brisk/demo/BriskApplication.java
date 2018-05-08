@@ -1,4 +1,4 @@
-package ro.orange.brisk;
+package ro.orange.brisk.demo;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package ro.orange.brisk.beans;
+package ro.orange.brisk.demo.beans;
 
 public class Case {
     private String oacode;
