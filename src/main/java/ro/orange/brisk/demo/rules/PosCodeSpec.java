@@ -1,21 +1,25 @@
 package ro.orange.brisk.demo.rules;
 
 import org.springframework.web.servlet.ModelAndView;
+import ro.orange.brisk.core.*;
 import ro.orange.brisk.demo.beans.Case;
-import ro.orange.brisk.core.EnumOperator;
-import ro.orange.brisk.core.ISpec;
-import ro.orange.brisk.core.IWebComponent;
-import ro.orange.brisk.core.SpecLambdaFactory;
 
 import java.util.UUID;
 
 //DEMO
-public class PosCodeSpec implements ISpec<Case>, IWebComponent {
+public class PosCodeSpec implements ISpec<Case>, IWebComponent, IPersistentSpec {
 
     String id = UUID.randomUUID().toString();
+
     String configuration;
-    String right = "agent.poscode"; //just for tracing; replace with runtimeLambda?
+
+    String against = "posCode"; //just for tracing; replace with runtimeLambda?
+
     EnumOperator operator;
+
+    public PosCodeSpec() {
+
+    }
 
     public PosCodeSpec(String poscode, EnumOperator operator) {
         this.configuration = poscode;
@@ -25,7 +29,7 @@ public class PosCodeSpec implements ISpec<Case>, IWebComponent {
     @Override
     public Boolean isSatisfiedBy(Case input) {
         if (null == input || null == input.getAgent()) return false;
-        return SpecLambdaFactory.resolveLambdaForOperator(configuration, operator, (Case c) -> c.getAgent().getPosCode()).apply(input);
+        return SpecLambdaFactory.resolveLambdaForOperator(configuration, operator, (Case c) -> input.getAgent().getPosCode()).apply(input);
     }
 
     @Override
@@ -40,8 +44,8 @@ public class PosCodeSpec implements ISpec<Case>, IWebComponent {
 
     @Override
     public ModelAndView displayComponent() {
-        ModelAndView modelAndView = new ModelAndView("input-text-component :: afrag");
-        modelAndView.addObject("label", getComponentName());
+        ModelAndView modelAndView = new ModelAndView("input-text-component");
+        modelAndView.addObject("label", against);
         modelAndView.addObject("operator", operator);
         modelAndView.addObject("input", configuration);
         return modelAndView;

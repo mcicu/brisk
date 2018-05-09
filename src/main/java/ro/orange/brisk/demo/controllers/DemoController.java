@@ -25,7 +25,7 @@ public class DemoController {
     @RequestMapping(path = "/preview", method = RequestMethod.POST, produces = "application/json")
     public Boolean evaluate(@RequestBody Case input) {
 
-        ISpec<Case> packageCodeSpec = SpecFactory.inList(Arrays.asList("ME01E", "ME02E"), c -> c.getPackageCode());
+        ISpec<Case> packageCodeSpec = SpecFactory.inList(Arrays.asList("ME01E", "ME02E"), Case::getPackageCode);
         //ISpec<Case> oacodeSpec = new HelloSpec("HDS-123", EnumOperator.EQUALS);
 
         ISpec<Case> posCodeSpec = new PosCodeSpec("POS123", EnumOperator.EQUALS);
@@ -33,20 +33,18 @@ public class DemoController {
         ISpec<LocalDateTime> dateSpec = SpecFactory.greaterThanOrEqual(LocalDateTime.of(2018, Month.APRIL, 1, 0, 0));
 
         //could eval input fields, input subfields, and static specs
-        ISpec<Case> compositeSpec = new ASpec<>(c -> packageCodeSpec.isSatisfiedBy(c) && posCodeSpec.isSatisfiedBy(c) && dateSpec.isSatisfiedBy(LocalDateTime.now()));
+        ISpec<Case> complexSpec = new ASpec<>(c -> packageCodeSpec.isSatisfiedBy(c) && posCodeSpec.isSatisfiedBy(c) && dateSpec.isSatisfiedBy(LocalDateTime.now()));
 
         Boolean eval = true;
 
-        /* AndSpec class demo */
-        ISpec<Case> andSpec1 = new AndSpec<>(packageCodeSpec, packageCodeSpec);
-        Boolean andSpecTest = andSpec1.isSatisfiedBy(input);
-        System.out.println("AndSpec1 isSatisfiedBy: " + andSpecTest);
+        /* ConjunctiveSpec class demo */
+        ISpec<Case> andSpec1 = new ConjunctiveSpec<Case>().add(packageCodeSpec).add(complexSpec);
+        logger.info("AndSpec1 eval: {}", andSpec1.isSatisfiedBy(input));
 
-        ISpec<Case> andSpec2 = new AndSpec<>(andSpec1, posCodeSpec);
-        Boolean andSpecTest2 = andSpec2.isSatisfiedBy(input);
-        System.out.println("AndSpec2 isSatisfiedBy: " + andSpecTest2);
+        ISpec<Case> andSpec2 = new ConjunctiveSpec<Case>().add(andSpec1).add(packageCodeSpec);
+        logger.info("AndSpec2 eval: {}", andSpec2.isSatisfiedBy(input));
 
-        eval = eval && andSpecTest2;
+        eval = eval && andSpec2.isSatisfiedBy(input);
 
         return eval;
     }
