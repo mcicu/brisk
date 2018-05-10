@@ -23,7 +23,9 @@ public class WebConjunctiveSpec<T> extends ConjunctiveSpec<T> implements IWebCom
         List<String> fragments = new ArrayList<>();
         for (ISpec<T> spec : this.specs) {
             if (spec instanceof IWebComponent) {
-                fragments.add(((IWebComponent) spec).displayComponent().getViewName());
+                IWebComponent component = (IWebComponent) spec;
+                fragments.add(component.displayComponent().getViewName());
+                mav.addAllObjects(component.displayComponent().getModel());
             }
         }
 

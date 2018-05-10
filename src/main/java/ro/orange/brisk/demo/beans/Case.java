@@ -4,6 +4,7 @@ public class Case {
     private String oacode;
     private String packageCode;
     private Agent agent;
+    private String msisdn;
 
     public String getOacode() {
         return oacode;
@@ -27,5 +28,13 @@ public class Case {
 
     public void setAgent(Agent agent) {
         this.agent = agent;
+    }
+
+    public String getMsisdn() {
+        return msisdn;
+    }
+
+    public void setMsisdn(String msisdn) {
+        this.msisdn = msisdn;
     }
 }

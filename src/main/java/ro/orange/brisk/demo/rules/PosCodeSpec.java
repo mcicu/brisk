@@ -9,7 +9,7 @@ import java.util.UUID;
 //DEMO
 public class PosCodeSpec implements ISpec<Case>, IWebComponent, IPersistentSpec {
 
-    String id = UUID.randomUUID().toString();
+    String id = "a" + UUID.randomUUID().toString().replaceAll("-", "");
 
     String configuration;
 
@@ -44,10 +44,10 @@ public class PosCodeSpec implements ISpec<Case>, IWebComponent, IPersistentSpec 
 
     @Override
     public ModelAndView displayComponent() {
-        ModelAndView modelAndView = new ModelAndView("input-text-component");
-        modelAndView.addObject("label", against);
-        modelAndView.addObject("operator", operator);
-        modelAndView.addObject("input", configuration);
+        ModelAndView modelAndView = new ModelAndView("input-text-component::frag(" + id + ")");
+        modelAndView.addObject(id + "label", against);
+        modelAndView.addObject(id + "operator", operator);
+        modelAndView.addObject(id + "input", configuration);
         return modelAndView;
     }
 }

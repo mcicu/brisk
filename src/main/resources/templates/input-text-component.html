@@ -1,3 +1,3 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="afrag">
-    <label th:text="${label}"></label> <label th:text="${operator}"></label> <input type="text" th:value="${input}" />hhh
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="frag(id)">
+    <label th:text='${__${id + "label"}__}'></label> <label th:text='${__${id + "operator"}__}'></label> <input type="text" th:value='${__${id + "input"}__}' />
 </div>

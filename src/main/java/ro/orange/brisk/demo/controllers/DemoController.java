@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ro.orange.brisk.demo.beans.Case;
 import ro.orange.brisk.core.*;
-import ro.orange.brisk.demo.rules.*;
 import ro.orange.brisk.core.utils.LambdaUtils;
+import ro.orange.brisk.demo.beans.Case;
+import ro.orange.brisk.demo.rules.MsisdnSpec;
+import ro.orange.brisk.demo.rules.PosCodeSpec;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -70,4 +72,35 @@ public class DemoController {
         return eval;
     }
 
+    @RequestMapping(path = "/scoped", method = RequestMethod.POST, produces = "application/json")
+    public Boolean scoped(@RequestBody Case input) {
+
+        ISpec<String> msisdnSpec = new MsisdnSpec();
+        ISpec<String> msisdnSpec2 = new MsisdnSpec();
+
+        CompositeSpec<Case> casespec = new CompositeSpec<>();
+        casespec.add(msisdnSpec);
+        casespec.add(msisdnSpec2);
+
+        return casespec.isSatisfiedBy(input);
+    }
+
+    private void recursivePath(Class clazz, String prefix) {
+        if (false == clazz.getTypeName().startsWith("ro.orange"))
+            return;
+
+        for (Field f : clazz.getDeclaredFields()) {
+            System.out.println(prefix + " " + f.getName());
+            recursivePath(f.getType(), prefix+prefix);
+        }
+    }
+
+    @RequestMapping(path = "/scope-discovery", method = RequestMethod.POST, produces = "application/json")
+    public Boolean scopeDiscovery(@RequestBody Case input) throws Exception {
+
+        recursivePath(input.getClass(), "-");
+        return true;
+    }
+
 }
+

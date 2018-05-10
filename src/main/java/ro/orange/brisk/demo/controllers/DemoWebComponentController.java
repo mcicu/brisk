@@ -8,6 +8,7 @@ import ro.orange.brisk.core.EnumOperator;
 import ro.orange.brisk.core.WebConjunctiveSpec;
 import ro.orange.brisk.demo.beans.Case;
 import ro.orange.brisk.demo.infrastructure.SpecRepository;
+import ro.orange.brisk.demo.rules.OacodeSpec;
 import ro.orange.brisk.demo.rules.PosCodeSpec;
 
 @Controller
@@ -28,7 +29,7 @@ public class DemoWebComponentController {
     public ModelAndView fragment() {
         PosCodeSpec spec1 = new PosCodeSpec("POS124", EnumOperator.NOT_EQUALS);
         PosCodeSpec spec2 = new PosCodeSpec("POS123", EnumOperator.EQUALS);
-        PosCodeSpec spec3 = new PosCodeSpec("POS123", EnumOperator.EQUALS);
+        OacodeSpec spec3 = new OacodeSpec("HDS-123", EnumOperator.NOT_EQUALS);
         WebConjunctiveSpec<Case> webConjunctiveSpec = new WebConjunctiveSpec<>();
         webConjunctiveSpec.add(spec1);
         webConjunctiveSpec.add(spec2);
