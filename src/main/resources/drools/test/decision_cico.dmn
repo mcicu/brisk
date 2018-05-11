@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:feel="http://www.omg.org/spec/FEEL/20140401"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"
+             id="_edbd2d8e-a5a8-4660-9bb9-adaa792d900c"
+             namespace="http://camunda.org/schema/1.0/dmn"
+             name="DRD"
+             xsi:schemaLocation="http://www.omg.org/spec/DMN/20151101/dmn.xsd"
+             expressionLanguage="http://www.omg.org/spec/FEEL/20140401"
+             typeLanguage="http://www.omg.org/spec/FEEL/20140401">
+
+
+    <inputData id="_Cico.agent.posCode" name="cico.agent.posCode">
+        <variable name="cico.agent.posCode" typeRef="feel:string"/>
+    </inputData>
+
+    <inputData id="_Cico" name="cico">
+        <variable name="cico" typeRef="feel:string"/>
+    </inputData>
+
+    <inputData id="_Cico.oacode" name="cico.oacode">
+        <variable name="cico.oacode" typeRef="feel:string"/>
+    </inputData>
+
+    <decision id="decision_cico" name="Check poscode and oacode">
+
+        <variable name="roll" typeRef="feel:string"/>
+
+        <decisionTable id="decisionTable_1" hitPolicy="FIRST" outputLabel="roll">
+
+            <input id="_iCico.agent.posCode" label="cico.agent.posCode">
+                <inputExpression id="inputExpression_1" typeRef="feel:string">
+                    <text>cico.agent.posCode</text>
+                </inputExpression>
+            </input>
+
+            <input id="_iCico.oacode" label="cico.oacode">
+                <inputExpression id="LiteralExpression_09waieq" typeRef="feel:string">
+                    <text></text>
+                </inputExpression>
+            </input>
+
+
+            <output id="_oRoll" name="roll" typeRef="feel:boolean"/>
+
+
+            <rule id="DecisionRule_08psmb7">
+                <description>"all true"</description>
+                <inputEntry id="UnaryTests_01eq25b">
+                    <text>"POS123"</text>
+                </inputEntry>
+                <inputEntry id="UnaryTests_1cwcwgq">
+                    <text>"HDS123"</text>
+                </inputEntry>
+                <outputEntry id="LiteralExpression_07cpn4a">
+                    <text>true</text>
+                </outputEntry>
+            </rule>
+            <rule id="DecisionRule_052h2br">
+                <inputEntry id="UnaryTests_0r1hbsy">
+                    <text></text>
+                </inputEntry>
+                <inputEntry id="UnaryTests_0t3bhuc">
+                    <text></text>
+                </inputEntry>
+                <outputEntry id="LiteralExpression_0b2e4aj">
+                    <text>false</text>
+                </outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+</definitions>
