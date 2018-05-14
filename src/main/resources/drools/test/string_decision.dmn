@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"
+             id="doubledefinition" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+
+    <decision id="decision_approval" name="Decision Approval">
+        <extensionElements>
+            <biodi:bounds x="190" y="112" width="180" height="80"/>
+        </extensionElements>
+
+        <decisionTable id="decisionTable" hitPolicy="FIRST">
+            <input id="input1" label="POS CODE">
+                <inputExpression id="inputExpression1" typeRef="string" expressionLanguage="Groovy">
+                    <text>null != caseinput.getAgent() ? caseinput.getAgent().getPosCode() : null</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_1qgyq2x" label="MSISDN">
+                <inputExpression id="LiteralExpression_1bho4xv" typeRef="string">
+                    <text>caseinput.msisdn</text>
+                </inputExpression>
+            </input>
+            <output id="output1" label="approval" name="approval" typeRef="string"/>
+            <rule id="DecisionRule_1ppw3lz">
+                <inputEntry id="UnaryTests_0ozpj4p">
+                    <text>"POS123"</text>
+                </inputEntry>
+                <inputEntry id="UnaryTests_1r3wjs9">
+                    <text>"0752323853"</text>
+                </inputEntry>
+                <outputEntry id="LiteralExpression_0f2pn0z">
+                    <text>true</text>
+                </outputEntry>
+            </rule>
+            <rule id="DecisionRule_0rb4mj2">
+                <inputEntry id="UnaryTests_0r5pj5n">
+                    <text></text>
+                </inputEntry>
+                <inputEntry id="UnaryTests_08jynmc">
+                    <text></text>
+                </inputEntry>
+                <outputEntry id="LiteralExpression_0qqzw8t">
+                    <text>false</text>
+                </outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+
+    <decision id="booltostring" name="Booltostring">
+        <extensionElements>
+            <biodi:bounds x="486" y="117" width="180" height="80"/>
+            <biodi:edge source="decision_approval">
+                <biodi:waypoints x="370" y="154"/>
+                <biodi:waypoints x="486" y="155"/>
+            </biodi:edge>
+        </extensionElements>
+        <informationRequirement>
+            <requiredDecision href="#decision_approval"/>
+        </informationRequirement>
+        <decisionTable id="DecisionTable_1p6vblm">
+            <input id="InputClause_0eu6a2y">
+                <inputExpression id="LiteralExpression_1asbryg" typeRef="boolean">
+                    <text>approval</text>
+                </inputExpression>
+            </input>
+            <output id="OutputClause_0l1jb15" label="Approval String" name="approvalString" typeRef="string"/>
+            <rule id="DecisionRule_0yqytd3">
+                <inputEntry id="UnaryTests_1uxro3q">
+                    <text>true</text>
+                </inputEntry>
+                <outputEntry id="LiteralExpression_1jzih00">
+                    <text>"Aprobat!"</text>
+                </outputEntry>
+            </rule>
+            <rule id="DecisionRule_1iytrww">
+                <inputEntry id="UnaryTests_01cbsoz">
+                    <text>false</text>
+                </inputEntry>
+                <outputEntry id="LiteralExpression_0uo7nug">
+                    <text>"Neaprobat :("</text>
+                </outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+</definitions>
